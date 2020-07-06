@@ -30,7 +30,7 @@ optional arguments:
   --np NUM_PROCESSES  number of processing for multiprocessing
 '''
 
-GENOME_HOME = os.environ['GENOME_HOME']
+#GENOME_HOME = os.environ['GENOME_HOME']
 
 logger = mp.log_to_stderr(logging.DEBUG)
 
@@ -171,8 +171,10 @@ if args.mode == "standalone":
 
     count = 0
     for prefix, v in pairs.items():
+        if(len(v) != 2):
+            print(f'length of pair is: {v}')
+            print('prefix is:' + prefix)
         assert len(v) == 2
-
         _b_name = v[0] if "_buggy" in v[0] else v[1]
         _f_name = v[1] if "_fixed" in v[1] else v[0]
 
