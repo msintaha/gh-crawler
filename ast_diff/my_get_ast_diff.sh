@@ -1,3 +1,10 @@
-export CRAWLER_HOME=$(pwd)
+export BABEL_DIR=$(pwd)/../data/babel-dir/
+export NODE_PATH=$(pwd)/../data/node_modules/
+
+export CRAWLER_HOME="$(pwd)"
+source=../data/small_raw
+target=../data/small_astJSON
+echo $source
+echo $target
 #echo $CRAWLER_HOME
-python3 ast_diff/get_ast_diff.py --mode standalone --input_folder ../data/one-diff-dataset --output_folder ../data/ast-json-dataset
+python ast_diff/get_ast_diff.py --mode standalone --input_folder $source --output_folder $target
