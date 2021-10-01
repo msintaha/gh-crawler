@@ -11,5 +11,5 @@ echo $target
 python ast_diff/get_ast_diff.py --mode standalone --input_folder $source --output_folder $target --np 1
 
 cd /mnt/volume1/ubc-works/hoppity-data/
-cp -pR data_dir/ ml_raw/
+cp -pR $source ml_raw/
 cp ml_raw/*_buggy.js ml_astJSON/
