@@ -10,6 +10,7 @@ echo $target
 #echo $CRAWLER_HOME
 python ast_diff/get_ast_diff.py --mode standalone --input_folder $source --output_folder $target --np 1
 
-cd /mnt/volume1/ubc-works/hoppity-data/
+cd $data_dir
+rm -rf ml_raw
 cp -pR $source ml_raw/
 cp ml_raw/*_buggy.js ml_astJSON/
