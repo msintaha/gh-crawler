@@ -13,4 +13,4 @@ python ast_diff/get_ast_diff.py --mode standalone --input_folder $source --outpu
 cd $data_dir
 rm -rf ml_raw
 cp -pR $source ml_raw/
-cp ml_raw/*_buggy.js ml_astJSON/
+find ml_raw -type f -name "*_buggy.js" -exec cp -p {} ml_astJSON/ \; -print
