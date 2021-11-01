@@ -408,15 +408,17 @@ else:
 
     folder_ids = [_dir[len(path)-1:_dir.find("-", len(path))] + "-" + _dir[_dir.find("-", len(path))+1:_dir.find("-", _dir.find("-", len(path))+1)] + "-" + _dir[_dir.rfind("-")+1:_dir.find(":")] + ":" + _dir[_dir.find(":")+1:] for _dir in _dirs]
 
-pool = mp.Pool(NUM_THREADS)
+if __name__ == '__main__':
+    pool = mp.Pool(NUM_THREADS)
 
-for i in range(0, NUM_ACCESS_TOKENS):
-    token_idxs[i] = 1
+    for i in range(0, NUM_ACCESS_TOKENS):
+        token_idxs[i] = 1
 
-for folder_id in folder_ids:
-    results = pool.apply_async(process_folder, args=(folder_id, get_json_obj, args.input_file, args.output_folder, ))
+    for folder_id in folder_ids:
+        process_folder(folder_id, get_json_obj, args.input_file, args.output_folder,)
+        results = pool.apply_async(process_folder, args=(folder_id, get_json_obj, args.input_file, args.output_folder, ))
 
-results.get()
-pool.close()
-pool.join()
+    results.get()
+    pool.close()
+    pool.join()
 
