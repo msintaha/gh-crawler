@@ -134,12 +134,6 @@ def build_shift_node_ast(fname):
     return ast
 
 def make_graph_edits(root_path, file_tuple, writer):
-    # for f in file_tuple:
-    #     if not os.path.isfile(f):
-    #         print(f)
-    # if any([not os.path.isfile(f) for f in file_tuple]):
-    #     return file_tuple, (None, None), None, ('buggy/fixed/ast_diff file missing', None), vocab 
-
     f_bug, f_bug_src, f_fixed, f_diff = file_tuple
 
     sample_name = get_bug_prefix(f_bug) # e.g. 'SHIFT_01-01-2019:00_6_0selectors'
@@ -147,17 +141,17 @@ def make_graph_edits(root_path, file_tuple, writer):
     ast_bug = build_shift_node_ast(f_bug)
     ast_fixed = build_shift_node_ast(f_fixed)
 
-    with open(os.path.join(root_path, f_diff), 'r') as f:
-        text = f.read()
-        try:
-            jsonified = json.loads(text)
-        except:
-            return
+    try:
+        with open(os.path.join(root_path, f_diff), 'r') as f:
+            text = f.read()
+            try:
+                jsonified = json.loads(text)
+            except:
+                return
+    except FileNotFoundError:
+        return
         
     writer.writerow([f_bug_src.split('/')[-1], ast_bug.num_nodes, ast_fixed.num_nodes, len(jsonified), ','.join(map(lambda x: x['op'], jsonified))])
-    # if not ast_bug or not ast_fixed or ast_bug.num_nodes > cmd_args.max_ast_nodes or ast_fixed.num_nodes > cmd_args.max_ast_nodes:
-    #     return file_tuple, (None, None), None, ('too many nodes in ast', None), vocab
-
 
     return file_tuple, (ast_bug, ast_fixed)
 
