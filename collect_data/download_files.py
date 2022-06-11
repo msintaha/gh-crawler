@@ -154,17 +154,17 @@ def get_json_obj(push_event, global_id, tokens_dict, folder_path, json_array, er
         if not os.path.isdir(bug_path):
             os.mkdir(bug_path)
 
-        fnames = [f.filename for f in files]
-        files_to_download = [filename for filename in fnames if filename.split('.')[-1] == 'js' and "umd.js" not in filename and "min.js" not in filename]
+        files_to_download = [f for f in files if f.filename.split('.')[-1] == 'js' and "umd.js" not in f.filename and "min.js" not in f.filename]
 
         url = push_event[0].split(".git")[0]
 
-        for filename in files_to_download:
+        for f in files_to_download:
+            filename = f.filename
             str_file_id = str(file_id)
             raw_file_name = filename.split(".js")[0].split("/")[-1]
-            fixed_name = str_file_id + raw_file_name + '_fixed.js'
-            buggy_name = str_file_id + raw_file_name+ '_buggy.js'
-            ast_name = str_file_id + raw_file_name + '_ast_diff.txt'
+            fixed_name = str_file_id + raw_file_name + '_' + f.sha + '_' + f.author + '_fixed.js'
+            buggy_name = str_file_id + raw_file_name + '_' + f.sha + '_' + f.author + '_buggy.js'
+            ast_name = str_file_id + raw_file_name + '_' + f.sha + '_' + f.author + '_ast_diff.txt'
 
             download = download_files(url.replace("github.com", "raw.githubusercontent.com"), push_event[2], push_event[3], filename, fixed_name, buggy_name, bug_path)
 
