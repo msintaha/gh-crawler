@@ -12,6 +12,7 @@ import logging
 import multiprocessing as mp
 import github
 import requests
+import uuid
 
 '''
 usage: Script to download files based on commit data [-h]
@@ -162,9 +163,10 @@ def get_json_obj(push_event, global_id, tokens_dict, folder_path, json_array, er
             filename = f.filename
             str_file_id = str(file_id)
             raw_file_name = filename.split(".js")[0].split("/")[-1]
-            fixed_name = str_file_id + raw_file_name + '_' + f.sha + '_fixed.js'
-            buggy_name = str_file_id + raw_file_name + '_' + f.sha + '_buggy.js'
-            ast_name = str_file_id + raw_file_name + '_' + f.sha + '_ast_diff.txt'
+            commit_id = f.sha if f.sha else uuid.uuid4().hex
+            fixed_name = str_file_id + raw_file_name + '_' + commit_id + '_fixed.js'
+            buggy_name = str_file_id + raw_file_name + '_' + commit_id + '_buggy.js'
+            ast_name = str_file_id + raw_file_name + '_' + commit_id + '_ast_diff.txt'
 
             download = download_files(url.replace("github.com", "raw.githubusercontent.com"), push_event[2], push_event[3], filename, fixed_name, buggy_name, bug_path)
 
